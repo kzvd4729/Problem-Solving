@@ -1,0 +1,81 @@
+/****************************************************************************************
+*  @author: kzvd4729                                         created: Mar/27/2018 23:23                        
+*  solution_verdict: Wrong answer on test 13                 language: GNU C++14                               
+*  run_time: 1699 ms                                         memory_used: 14700 KB                             
+*  problem: https://codeforces.com/contest/954/problem/E
+****************************************************************************************/
+#include<bits/stdc++.h>
+using namespace std;
+const long double eps=0.0000001;
+int n;
+long double txt,tx,tr,lo,hi,md,ans;
+struct data
+{
+  long double x,t;
+}arr[200005];
+bool cmp(data A,data B)
+{
+  return A.t<B.t;
+}
+bool cmp2(data A,data B)
+{
+  return A.t>B.t;
+}
+long double check(long double xx)
+{
+  long double str=xx,sum=0;
+  for(int i=1;i<=n;i++)
+  {
+    if(arr[i].x<=xx)
+    {
+      sum+=(arr[i].t*arr[i].x);
+      xx-=arr[i].x;
+    }
+    else
+    {
+      sum+=(arr[i].t*xx);
+      xx=0;
+      break;
+    }
+  }
+  ///cout<<str<<" "<<sum<<" "<<sum/str<<endl;
+  return sum/str;
+}
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+   cin>>n>>tr;
+  for(int i=1;i<=n;i++)cin>>arr[i].x;
+  for(int i=1;i<=n;i++)cin>>arr[i].t;
+  for(int i=1;i<=n;i++)
+  {
+    tx+=arr[i].x;
+    txt+=(arr[i].x*arr[i].t);
+  }
+  sort(arr+1,arr+n+1,cmp);
+  lo=0,hi=tx;
+  for(int j=1;j<=60;j++)
+  {
+    md=(lo+hi)/2.0;
+    if(check(md)<=tr)lo=md;
+    else hi=md;
+  }
+  ///cout<<md<<endl;
+  if(fabs(check(md)-tr)<=eps)ans=md;
+  sort(arr+1,arr+n+1,cmp2);
+  lo=0,hi=tx;
+  ///cout<<"Start"<<endl;
+  for(int j=1;j<=60;j++)
+  {
+    md=(lo+hi)/2.0;
+    if(check(md)<=tr)hi=md;
+    else lo=md;
+    ///cout<<md<<" "<<check(md)<<endl;
+  }
+  ///cout<<"End"<<endl;
+  ///cout<<md<<endl;
+  if(fabs(check(md)-tr)<=eps)ans=max(ans,md);
+  cout<<setprecision(12)<<fixed<<ans<<endl;
+  return 0;
+}

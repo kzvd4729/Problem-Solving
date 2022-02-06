@@ -1,0 +1,73 @@
+/****************************************************************************************
+*  @author: kzvd4729                                         created: May/07/2020 15:16                        
+*  solution_verdict: Wrong answer on test 12                 language: GNU C++14                               
+*  run_time: 249 ms                                          memory_used: 36400 KB                             
+*  problem: https://codeforces.com/contest/543/problem/D
+****************************************************************************************/
+#include<iostream>
+#include<vector>
+#include<cstring>
+#include<map>
+#include<bitset>
+#include<assert.h>
+#include<algorithm>
+#include<iomanip>
+#include<cmath>
+#include<set>
+#include<queue>
+#include<unordered_map>
+#define long long long
+using namespace std;
+const long N=1e6,mod=1e9+7;
+vector<long>adj[N+2];long dp[N+2];
+long big(long b,long p)
+{
+  long r=1;
+  while(p)
+  {
+    if(p&1)r=(1LL*r*b)%mod;
+    b=(1LL*b*b)%mod;p/=2;
+  }
+  return r;
+}
+void dfs(long node,long par)
+{
+  dp[node]=1;
+  for(auto x:adj[node])
+  {
+    if(x==par)continue;
+    dfs(x,node);
+    dp[node]=(1LL*dp[node]*(dp[x]+1))%mod;
+  }
+}
+long ans[N+2];
+void dds(long node,long par,long pr)
+{
+  ans[node]=(1LL*dp[node]*pr)%mod;
+  for(auto x:adj[node])
+  {
+    if(x==par)continue;
+    long con=(1LL*dp[node]*big((dp[x]+1)%mod,mod-2))%mod;
+    dds(x,node,((1LL*pr*con)+1)%mod);
+  }
+}
+int main()
+{
+  ios_base::sync_with_stdio(0);cin.tie(0);
+  long n;cin>>n;
+  for(long i=2;i<=n;i++)
+  {
+    long x;cin>>x;
+    adj[i].push_back(x);adj[x].push_back(i);
+  }
+  long rt=1+rand()%n;
+  dfs(rt,-1);dds(rt,-1,1);
+  //for(long i=1;i<=n;i++)cout<<dp[i]<<" ";cout<<endl;
+  for(long i=1;i<=n;i++)cout<<ans[i]<<" ";cout<<endl;
+  /*for(long i=1;i<=n;i++)
+  {
+    dfs(i,-1);cout<<dp[i]<<" ";
+  }*/
+  cout<<endl;
+  return 0;
+}

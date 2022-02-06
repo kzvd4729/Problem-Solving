@@ -1,0 +1,62 @@
+/****************************************************************************************
+*  @author: kzvd4729                                         created: Aug/19/2020 12:18                        
+*  solution_verdict: Accepted                                language: GNU C++17                               
+*  run_time: 77 ms                                           memory_used: 0 KB                                 
+*  problem: https://codeforces.com/contest/1103/problem/B
+****************************************************************************************/
+#include<iostream>
+#include<vector>
+#include<cstring>
+#include<map>
+#include<bitset>
+#include<assert.h>
+#include<algorithm>
+#include<iomanip>
+#include<cmath>
+#include<set>
+#include<queue>
+#include<unordered_map>
+#include<random>
+#include<chrono>
+#include<stack>
+#include<deque>
+#define long long long
+using namespace std;
+const int N=1e6,inf=1e9;
+int main()
+{
+  ios_base::sync_with_stdio(0);cin.tie(0);
+   while(true)
+  {
+    string s;cin>>s;
+    if(s=="end")break;
+    else if(s=="mistake")assert(0);
+     int a=1,b=2;
+    while(true)
+    {
+      if(a>inf)assert(0);
+      cout<<"? "<<a<<" "<<b<<endl;
+      char c;cin>>c;
+       if(c=='x')break;
+      a=b;b+=b;
+    }
+    if(a==1&&b==2)
+    {
+      cout<<"? "<<2<<" "<<3<<endl;
+      char c;cin>>c;
+      if(c=='x')cout<<"! "<<1<<endl;
+      else cout<<"! "<<2<<endl;
+      continue;
+    }
+    int lo=a+1,hi=b,md;
+    while(lo<hi)
+    {
+      md=(lo+hi)/2;
+      cout<<"? "<<a<<" "<<md<<endl;
+      char c;cin>>c;
+      if(c=='x')hi=md;else lo=md+1;
+    }
+    cout<<"! "<<lo<<endl;
+  }
+  return 0;
+}

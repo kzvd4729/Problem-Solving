@@ -1,0 +1,33 @@
+/****************************************************************************************
+*  @author: kzvd4729                                         created: Dec/04/2020 14:27                        
+*  solution_verdict: Accepted                                language: GNU C++14                               
+*  run_time: 31 ms                                           memory_used: 0 KB                                 
+*  problem: https://codeforces.com/contest/995/problem/B
+****************************************************************************************/
+#include<bits/stdc++.h>
+#define long long long
+using namespace std;
+int n,arr[202],ans;
+int _find(int id,int x)
+{
+  for(int i=id;i<=n;i++)
+    if(arr[i]==x)return i;
+}
+int main()
+{
+  ios_base::sync_with_stdio(0);
+  cin.tie(0);
+   cin>>n;
+  n*=2;
+  for(int i=1;i<=n;i++)
+    cin>>arr[i];
+  for(int i=1;i<=n;i+=2)
+  {
+    int id=_find(i+1,arr[i]);
+    ans+=id-i-1;
+    for(int j=id;j>i+1;j--)
+      swap(arr[j],arr[j-1]);
+  }
+  cout<<ans<<endl;
+  return 0;
+}
