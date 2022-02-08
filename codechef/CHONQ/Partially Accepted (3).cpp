@@ -1,0 +1,71 @@
+/****************************************************************************************
+*  @author: kzvd4729                                         created: 04-03-2019 16:24:13                      
+*  solution_verdict: Partially Accepted                      language: C++14                                   
+*  run_time: 0.24 sec                                        memory_used: 16.4M                                
+*  problem: https://www.codechef.com/MARCH19A/problems/CHONQ
+****************************************************************************************/
+#include<bits/stdc++.h>
+#define long long long
+using namespace std;
+const long N=1e5+4;
+long bit[N+2],aa[N+2];
+const double eps=1e-9;
+void upd(long x,long vl)
+{
+  if(x<=0)x=1;
+  for( ;x<=N;x+=x&-x)
+    bit[x]+=vl*1LL;
+}
+long get(long x)
+{
+  long ret=0;
+  for( ;x>0;x-=x&-x)
+    ret+=bit[x];
+  return ret;
+}
+int main()
+{
+  ios_base::sync_with_stdio(0);cin.tie(0);
+  long t;cin>>t;
+  while(t--)
+  {
+    long n,k;cin>>n>>k;memset(bit,0,sizeof(bit));
+    for(long i=1;i<=n;i++)cin>>aa[i];
+    for(long i=1;i<=n;i++)
+    {
+      long sq=sqrt(aa[i]*1.0+eps);
+      for(long j=1;j<=sq;j++)
+      {
+        upd(i-j+1,aa[i]/j);upd(i-j+2,-(aa[i]/j));
+        long lt=(aa[i]/(j+1))+1,rt=aa[i]/j;
+        lt=max(lt,sq+1);if(lt>rt)continue;
+        upd(i-rt+1,j);upd(i-lt+2,-j);
+      }
+    }
+    int f=0;
+    for(long i=1;i<=n+1;i++)
+    {
+      long x=get(i);if(x<0)assert(0);
+      if(x<=k)
+      {
+        cout<<i<<"\n";f=1;
+        break;
+      }
+      //cout<<get(i)<<endl;
+    }
+    assert(f);
+  }
+  /*
+56769
+108124
+14973
+2145
+2128
+2577
+3270
+4501
+7231
+9999
+*/
+  return 0;
+}
